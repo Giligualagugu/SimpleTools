@@ -1,4 +1,4 @@
-package com.company.dataX.single;
+package com.company.dataX.builder;
 
 import com.company.dataX.jsonInfo.*;
 import lombok.AllArgsConstructor;
@@ -27,6 +27,10 @@ public class SingleJsonBuilder {
 	private String sourceTable;
 	private String targetTabel;
 
+	private String reader;
+
+	private String writer;
+
 	private List<String> column;
 
 	//构建json对象;
@@ -44,7 +48,7 @@ public class SingleJsonBuilder {
 		sourceParam.setConnection(sConnectionList);
 
 		DataReader dataReader = new DataReader();
-		dataReader.setName("postgresqlreader");
+		dataReader.setName(getReader());
 		dataReader.setParameter(sourceParam);
 
 		//目标数据库
@@ -60,7 +64,7 @@ public class SingleJsonBuilder {
 		targetParam.setConnection(tConnectionList);
 
 		DataWriter dataWriter = new DataWriter();
-		dataWriter.setName("postgresqlwriter");
+		dataWriter.setName(getWriter());
 		dataWriter.setParameter(targetParam);
 
 		Operater operater = new Operater();

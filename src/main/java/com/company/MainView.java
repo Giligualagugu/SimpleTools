@@ -1,9 +1,7 @@
 package com.company;
 
-import com.company.dataX.actionlistener.BuildMultiJsonFile;
-import com.company.dataX.actionlistener.ClearBtnListener;
-import com.company.dataX.actionlistener.FileImporter;
-import com.company.dataX.actionlistener.SingleJsonListener;
+import com.company.dataX.actionlistener.*;
+import com.company.dataX.enums.DataBaseType;
 import lombok.Data;
 
 import javax.swing.*;
@@ -18,6 +16,9 @@ import java.util.List;
  */
 @Data
 public class MainView {
+
+	private ButtonGroup sourceBtnGroup;
+	private ButtonGroup targetBtnGroup;
 
 	private JTextArea logs;
 
@@ -44,38 +45,53 @@ public class MainView {
 	}
 
 	private void initialize() {
-
 		motherboard = new JFrame("DataX json creater");
-
-		initElement();
 		motherboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		motherboard.setLocationByPlatform(true);
 		motherboard.pack();
-		motherboard.setVisible(true);
 		motherboard.setSize(800, 600);
-
+		motherboard.setVisible(true);
+		initElement();
 	}
 
 	private void initElement() {
-
-		/*
-			source	数据库地址 用户名 密码
-			target	数据库地址 用户名 密码
-
-			public  表名, 表字段;
-
-			button 页面生成json
-			button 导入文件
-			button 导入生成json
-			button 下载模板文件
-		 */
-
 		showDataBaseInput();
-
 		showButtons();
-
 		showColums();
+		showBtnGroups();
+	}
 
+	private void showBtnGroups() {
+
+		JPanel jPanel = new JPanel();
+		jPanel.setBorder(BorderFactory.createTitledBorder("目标数据库类型"));
+		JRadioButton mysqlBtn = new JRadioButton(DataBaseType.MYSQL.name());
+		mysqlBtn.setSelected(true);
+		JRadioButton postgreBtn = new JRadioButton(DataBaseType.POSTGRESQL.name());
+		targetBtnGroup = new ButtonGroup();
+		targetBtnGroup.add(mysqlBtn);
+		targetBtnGroup.add(postgreBtn);
+		jPanel.add(mysqlBtn);
+		jPanel.add(postgreBtn);
+		//===================================
+		JPanel jPanel2 = new JPanel();
+		jPanel2.setBorder(BorderFactory.createTitledBorder("源数据库类型"));
+		JRadioButton mysqlBtn2 = new JRadioButton(DataBaseType.MYSQL.name());
+		mysqlBtn2.setSelected(true);
+		JRadioButton postgreBtn2 = new JRadioButton(DataBaseType.POSTGRESQL.name());
+		sourceBtnGroup = new ButtonGroup();
+		sourceBtnGroup.add(mysqlBtn2);
+		sourceBtnGroup.add(postgreBtn2);
+		jPanel2.add(mysqlBtn2);
+		jPanel2.add(postgreBtn2);
+
+		JPanel parent = new JPanel();
+
+		parent.add(jPanel);
+		parent.add(jPanel2);
+		parent.setLayout(new GridLayout(2, 1));
+
+		motherboard.getContentPane().add(parent, BorderLayout.WEST);
 	}
 
 	private void showColums() {
@@ -95,7 +111,7 @@ public class MainView {
 		left.setWheelScrollingEnabled(true);
 		left.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-		left.setBorder(BorderFactory.createTitledBorder("表字段"));
+		left.setBorder(BorderFactory.createTitledBorder("表字段(单文件必填)"));
 
 		JSplitPane jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
 
@@ -106,23 +122,26 @@ public class MainView {
 
 		JPanel jPanel = new JPanel(new FlowLayout());
 		JButton singleJson = new JButton("生成单个");
-		JButton importTemplate = new JButton("导入文件");
-		JButton downLoadFile = new JButton("下载模板");
+		JButton importddl = new JButton("导入ddl.sql文件");
 		JButton multiJson = new JButton("批量生成");
 		JButton clearBtn = new JButton("清理数据");
 
+		JButton testBtn = new JButton("test");
+
 		jPanel.add(singleJson);
-		jPanel.add(importTemplate);
-		jPanel.add(downLoadFile);
+		jPanel.add(importddl);
 		jPanel.add(multiJson);
 		jPanel.add(clearBtn);
+		jPanel.add(testBtn);
 
 		motherboard.getContentPane().add(jPanel, BorderLayout.SOUTH);
 
 		singleJson.addActionListener(new SingleJsonListener(this));
 		clearBtn.addActionListener(new ClearBtnListener(this));
-		importTemplate.addActionListener(new FileImporter(this));
-		multiJson.addActionListener(new BuildMultiJsonFile(this));
+		importddl.addActionListener(new DDlFileImportListener(this));
+		multiJson.addActionListener(new MultiJsonListener(this));
+
+		testBtn.addActionListener(new TestActionListener(this));
 	}
 
 	private void showDataBaseInput() {
@@ -135,8 +154,6 @@ public class MainView {
 		uname = new JTextField();
 		JLabel pwdLable = new JLabel("密码:", JLabel.RIGHT);
 		pwd = new JTextField();
-		JLabel tableLabel = new JLabel("原表名:", JLabel.RIGHT);
-		sourceTable = new JTextField();
 
 		JLabel urlLabel2 = new JLabel("目标库:", JLabel.RIGHT);
 		url2 = new JTextField();
@@ -144,10 +161,8 @@ public class MainView {
 		uname2 = new JTextField();
 		JLabel pwdLable2 = new JLabel("密码:", JLabel.RIGHT);
 		pwd2 = new JTextField();
-		JLabel tableLabel2 = new JLabel("现表名:", JLabel.RIGHT);
-		targetTable = new JTextField();
 
-		pannel.setLayout(new GridLayout(2, 6));
+		pannel.setLayout(new GridLayout(2, 5));
 
 		pannel.add(urlLabel);
 		pannel.add(url);
@@ -155,21 +170,35 @@ public class MainView {
 		pannel.add(uname);
 		pannel.add(pwdLable);
 		pannel.add(pwd);
-		pannel.add(tableLabel);
-		pannel.add(sourceTable);
-
 		pannel.add(urlLabel2);
 		pannel.add(url2);
 		pannel.add(unameLabel2);
 		pannel.add(uname2);
 		pannel.add(pwdLable2);
 		pannel.add(pwd2);
-		pannel.add(tableLabel2);
-		pannel.add(targetTable);
 
-		pannel.setBorder(BorderFactory.createTitledBorder("数据库参数项"));
+		pannel.setBorder(BorderFactory.createTitledBorder("公共项"));
 
-		motherboard.add(pannel, BorderLayout.NORTH);
+		JPanel panel2 = new JPanel();
+		panel2.setBorder(BorderFactory.createTitledBorder("单文件必填"));
+
+		JLabel tableLabel = new JLabel("原表名:", JLabel.RIGHT);
+		sourceTable = new JTextField();
+		JLabel tableLabel2 = new JLabel("现表名:", JLabel.RIGHT);
+		targetTable = new JTextField();
+
+		panel2.add(tableLabel);
+		panel2.add(sourceTable);
+		panel2.add(tableLabel2);
+		panel2.add(targetTable);
+		panel2.setLayout(new GridLayout(2, 2));
+
+		Box box = Box.createHorizontalBox();
+
+		box.add(pannel);
+		box.add(panel2);
+
+		motherboard.add(box, BorderLayout.NORTH);
 
 	}
 

@@ -2,12 +2,14 @@ package com.company.dataX.actionlistener;
 
 import com.alibaba.fastjson.JSON;
 import com.company.MainView;
+import com.company.dataX.enums.DataBaseType;
 import com.company.dataX.jsonInfo.LogUtils;
 import com.company.dataX.jsonInfo.SingleJson;
-import com.company.dataX.single.SingleJsonBuilder;
+import com.company.dataX.builder.SingleJsonBuilder;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 
 @AllArgsConstructor
@@ -24,8 +27,26 @@ public class SingleJsonListener implements ActionListener {
 	private MainView view;
 
 	public void actionPerformed(ActionEvent e) {
-
 		SingleJsonBuilder builder = new SingleJsonBuilder();
+
+		Enumeration<AbstractButton> sourceDTypes = view.getSourceBtnGroup().getElements();
+		while (sourceDTypes.hasMoreElements()) {
+			AbstractButton abstractButton = sourceDTypes.nextElement();
+			if (abstractButton.isSelected()) {
+				builder.setReader(DataBaseType.getType(abstractButton.getText()).getReader());
+				break;
+			}
+		}
+
+		Enumeration<AbstractButton> targetDTypes = view.getTargetBtnGroup().getElements();
+		while (targetDTypes.hasMoreElements()) {
+			AbstractButton abstractButton = targetDTypes.nextElement();
+			if (abstractButton.isSelected()) {
+				builder.setWriter(DataBaseType.getType(abstractButton.getText()).getWriter());
+				break;
+			}
+		}
+
 		builder.setSourceUrl(view.getUrl().getText());
 		builder.setTargetUrl(view.getUrl2().getText());
 		builder.setSourcePwd(view.getPwd().getText());
