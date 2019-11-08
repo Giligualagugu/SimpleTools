@@ -80,7 +80,7 @@ public class MultiJsonListener implements ActionListener {
 
 		String absolutePath = FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath();
 
-		String dir = "dataXjson";
+		String dir = "dataXjsonFiles";
 		String system = System.getProperty("os.name");
 		String line = "/";
 		if (system.toLowerCase().startsWith("windows")) {
@@ -94,11 +94,8 @@ public class MultiJsonListener implements ActionListener {
 
 		try {
 			for (File source : fileList) {
-
 				Map<String, Object> tableNamesColumns = parseFileToResult(source, sourceDType);
-
 				String tableName = ((List<String>) tableNamesColumns.get(TABLENAME)).get(0);
-
 				builder.setSourceTable(tableName);
 				builder.setTargetTabel(tableName);
 				builder.setColumn((List<String>) tableNamesColumns.get(COLUMNS));
@@ -113,14 +110,12 @@ public class MultiJsonListener implements ActionListener {
 				streamWriter.write(s);
 				LogUtils.loginfo(view.getLogs(), "生成文件路径:" + filename);
 				streamWriter.close();
-
 			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
 			LogUtils.loginfo(view.getLogs(), "json文件创建失败:" + e);
 		}
 		fileList.clear();
-		LogUtils.loginfo(view.getLogs(), "文件创建成功,输出到桌面文件夹:" + dir);
 
 	}
 

@@ -63,39 +63,39 @@ public class MainView {
 
 	private void showBtnGroups() {
 
-		JPanel jPanel = new JPanel();
-		jPanel.setBorder(BorderFactory.createTitledBorder("目标数据库类型"));
-		JRadioButton mysqlBtn = new JRadioButton(DataBaseType.MYSQL.name());
-		mysqlBtn.setSelected(true);
-		JRadioButton postgreBtn = new JRadioButton(DataBaseType.POSTGRESQL.name());
-		targetBtnGroup = new ButtonGroup();
-		targetBtnGroup.add(mysqlBtn);
-		targetBtnGroup.add(postgreBtn);
-		jPanel.add(mysqlBtn);
-		jPanel.add(postgreBtn);
-		//===================================
-		JPanel jPanel2 = new JPanel();
-		jPanel2.setBorder(BorderFactory.createTitledBorder("源数据库类型"));
-		JRadioButton mysqlBtn2 = new JRadioButton(DataBaseType.MYSQL.name());
-		mysqlBtn2.setSelected(true);
-		JRadioButton postgreBtn2 = new JRadioButton(DataBaseType.POSTGRESQL.name());
+		Box sourceBox = Box.createVerticalBox();
+		Box targetBox = Box.createVerticalBox();
+		JPanel boxLeft = new JPanel();
+		boxLeft.setLayout(new GridLayout(2, 1));
+		boxLeft.add(sourceBox);
+		boxLeft.add(targetBox);
+		sourceBox.setBorder(BorderFactory.createTitledBorder("来源库类型"));
+		targetBox.setBorder(BorderFactory.createTitledBorder("目标库类型"));
+
+		// 来源库
+		JRadioButton mysqlBtnS = new JRadioButton(DataBaseType.MYSQL.name());
+		mysqlBtnS.setSelected(true);
+		JRadioButton postgreBtnS = new JRadioButton(DataBaseType.POSTGRESQL.name());
 		sourceBtnGroup = new ButtonGroup();
-		sourceBtnGroup.add(mysqlBtn2);
-		sourceBtnGroup.add(postgreBtn2);
-		jPanel2.add(mysqlBtn2);
-		jPanel2.add(postgreBtn2);
+		sourceBtnGroup.add(mysqlBtnS);
+		sourceBtnGroup.add(postgreBtnS);
+		sourceBox.add(mysqlBtnS);
+		sourceBox.add(postgreBtnS);
 
-		JPanel parent = new JPanel();
+		// 目标库
+		JRadioButton mysqlBtnT = new JRadioButton(DataBaseType.MYSQL.name());
+		mysqlBtnT.setSelected(true);
+		JRadioButton postgreBtnT = new JRadioButton(DataBaseType.POSTGRESQL.name());
+		targetBtnGroup = new ButtonGroup();
+		targetBtnGroup.add(mysqlBtnT);
+		targetBtnGroup.add(postgreBtnT);
+		targetBox.add(mysqlBtnT);
+		targetBox.add(postgreBtnT);
 
-		parent.add(jPanel);
-		parent.add(jPanel2);
-		parent.setLayout(new GridLayout(2, 1));
-
-		motherboard.getContentPane().add(parent, BorderLayout.WEST);
+		motherboard.getContentPane().add(boxLeft, BorderLayout.WEST);
 	}
 
 	private void showColums() {
-
 		logs = new JTextArea();
 		logs.setTabSize(4);
 
@@ -105,6 +105,7 @@ public class MainView {
 		right.setBorder(BorderFactory.createTitledBorder("操作日志"));
 
 		columns = new JTextArea();
+		columns.setColumns(20);
 		JScrollPane left = new JScrollPane(columns);
 
 		columns.setLineWrap(true);
@@ -113,9 +114,11 @@ public class MainView {
 
 		left.setBorder(BorderFactory.createTitledBorder("表字段(单文件必填)"));
 
-		JSplitPane jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
-
-		motherboard.add(jSplitPane, BorderLayout.CENTER);
+		JSplitPane inputArea = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
+		//Box inputArea = Box.createHorizontalBox();
+//		inputArea.add(left);
+//		inputArea.add(right);
+		motherboard.add(inputArea, BorderLayout.CENTER);
 	}
 
 	private void showButtons() {
@@ -132,7 +135,7 @@ public class MainView {
 		jPanel.add(importddl);
 		jPanel.add(multiJson);
 		jPanel.add(clearBtn);
-		jPanel.add(testBtn);
+		//jPanel.add(testBtn);
 
 		motherboard.getContentPane().add(jPanel, BorderLayout.SOUTH);
 
@@ -146,14 +149,24 @@ public class MainView {
 
 	private void showDataBaseInput() {
 
-		JPanel pannel = new JPanel();
+		Box sourceBox = Box.createHorizontalBox();
+		Box targetBox = Box.createHorizontalBox();
+		Box boxLeft = Box.createVerticalBox();
+		boxLeft.add(sourceBox);
+		boxLeft.add(targetBox);
 		//pannel
-		JLabel urlLabel = new JLabel("源数据库:", JLabel.RIGHT);
+		JLabel urlLabel = new JLabel("来源库:", JLabel.RIGHT);
 		url = new JTextField();
 		JLabel unameLabel = new JLabel("用户:", JLabel.RIGHT);
 		uname = new JTextField();
 		JLabel pwdLable = new JLabel("密码:", JLabel.RIGHT);
 		pwd = new JTextField();
+		sourceBox.add(urlLabel);
+		sourceBox.add(url);
+		sourceBox.add(unameLabel);
+		sourceBox.add(uname);
+		sourceBox.add(pwdLable);
+		sourceBox.add(pwd);
 
 		JLabel urlLabel2 = new JLabel("目标库:", JLabel.RIGHT);
 		url2 = new JTextField();
@@ -162,43 +175,37 @@ public class MainView {
 		JLabel pwdLable2 = new JLabel("密码:", JLabel.RIGHT);
 		pwd2 = new JTextField();
 
-		pannel.setLayout(new GridLayout(2, 5));
+		targetBox.add(urlLabel2);
+		targetBox.add(url2);
+		targetBox.add(unameLabel2);
+		targetBox.add(uname2);
+		targetBox.add(pwdLable2);
+		targetBox.add(pwd2);
+		boxLeft.setBorder(BorderFactory.createTitledBorder("公共项"));
 
-		pannel.add(urlLabel);
-		pannel.add(url);
-		pannel.add(unameLabel);
-		pannel.add(uname);
-		pannel.add(pwdLable);
-		pannel.add(pwd);
-		pannel.add(urlLabel2);
-		pannel.add(url2);
-		pannel.add(unameLabel2);
-		pannel.add(uname2);
-		pannel.add(pwdLable2);
-		pannel.add(pwd2);
+		Box boxRight = Box.createVerticalBox();
+		boxRight.setBorder(BorderFactory.createTitledBorder("单文件必填"));
 
-		pannel.setBorder(BorderFactory.createTitledBorder("公共项"));
-
-		JPanel panel2 = new JPanel();
-		panel2.setBorder(BorderFactory.createTitledBorder("单文件必填"));
+		Box yuanbox = Box.createHorizontalBox();
+		Box nowbox = Box.createHorizontalBox();
 
 		JLabel tableLabel = new JLabel("原表名:", JLabel.RIGHT);
 		sourceTable = new JTextField();
 		JLabel tableLabel2 = new JLabel("现表名:", JLabel.RIGHT);
 		targetTable = new JTextField();
 
-		panel2.add(tableLabel);
-		panel2.add(sourceTable);
-		panel2.add(tableLabel2);
-		panel2.add(targetTable);
-		panel2.setLayout(new GridLayout(2, 2));
+		yuanbox.add(tableLabel);
+		yuanbox.add(sourceTable);
+		nowbox.add(tableLabel2);
+		nowbox.add(targetTable);
 
-		Box box = Box.createHorizontalBox();
+		boxRight.add(yuanbox);
+		boxRight.add(nowbox);
 
-		box.add(pannel);
-		box.add(panel2);
-
-		motherboard.add(box, BorderLayout.NORTH);
+		Box notrh = Box.createHorizontalBox();
+		notrh.add(boxLeft);
+		notrh.add(boxRight);
+		motherboard.add(notrh, BorderLayout.NORTH);
 
 	}
 
