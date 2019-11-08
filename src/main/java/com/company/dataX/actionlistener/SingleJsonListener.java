@@ -67,11 +67,8 @@ public class SingleJsonListener implements ActionListener {
 		builder.setColumn(strings);
 		SingleJson singleJson1 = builder.buildJsonFile();
 		String s = JSON.toJSONString(singleJson1, true);
-
 		File homeDirectory = FileSystemView.getFileSystemView().getHomeDirectory();
-
 		String absolutePath = homeDirectory.getAbsolutePath();
-
 		String system = System.getProperty("os.name");
 		String line = "/";
 
@@ -82,16 +79,11 @@ public class SingleJsonListener implements ActionListener {
 
 		try {
 			File file = new File(filename);
-
 			OutputStreamWriter streamWriter = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
-
 			streamWriter.write(s);
-
 			streamWriter.close();
 
 			LogUtils.loginfo(view.getLogs(), "生成文件路径:" + filename);
-
-			streamWriter.close();
 		} catch (Exception es) {
 			LogUtils.loginfo(view.getLogs(), "生成文件失败:" + es.getMessage());
 		}
