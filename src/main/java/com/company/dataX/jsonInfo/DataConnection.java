@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 public class DataConnection {
 
-	private List<String> jdbcUrl;
+	private String jdbcUrl;
 	private List<String> table;
 
 }

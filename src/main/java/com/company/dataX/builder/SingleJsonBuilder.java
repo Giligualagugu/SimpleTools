@@ -37,7 +37,7 @@ public class SingleJsonBuilder {
 	public SingleJson buildJsonFile() {
 		// 源数据库
 		DataConnection sourceConnection = new DataConnection();
-		sourceConnection.setJdbcUrl(Collections.singletonList(getSourceUrl()));
+		sourceConnection.setJdbcUrl(getSourceUrl());
 		sourceConnection.setTable(Collections.singletonList(getSourceTable()));
 		DataBaseParam sourceParam = new DataBaseParam();
 		sourceParam.setColumn(getColumn());
@@ -54,7 +54,7 @@ public class SingleJsonBuilder {
 		//目标数据库
 		DataConnection targetConnection = new DataConnection();
 		targetConnection.setTable(Collections.singletonList(getTargetTabel()));
-		targetConnection.setJdbcUrl(Collections.singletonList(getTargetUrl()));
+		targetConnection.setJdbcUrl(getTargetUrl());
 		DataBaseParam targetParam = new DataBaseParam();
 		targetParam.setColumn(getColumn());
 		targetParam.setPassword(getTargetPwd());
