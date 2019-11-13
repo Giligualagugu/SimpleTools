@@ -59,6 +59,12 @@ public class MainView {
 		showButtons();
 		showColums();
 		showBtnGroups();
+
+		String tips = "1.公共项参数必填.\n" +
+				"2.来源库和目标库类型默认MYSQL.\n" +
+				"3.单文件生成-> 表名必填-> 表字段必填(每行一个字段名,不要标点符号)->点击\"生成单个\"\n" +
+				"4.多文件生成-> 公共项必填->导入多个建表文件->点击\"批量生成\"\n";
+		logs.setText(tips);
 	}
 
 	private void showBtnGroups() {
@@ -104,7 +110,7 @@ public class MainView {
 	private void showColums() {
 		logs = new JTextArea();
 		logs.setTabSize(4);
-
+		logs.setLineWrap(true);
 		JScrollPane right = new JScrollPane(logs);
 		right.setWheelScrollingEnabled(true);
 		right.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
