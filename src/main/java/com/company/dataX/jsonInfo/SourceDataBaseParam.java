@@ -9,12 +9,12 @@ import java.util.List;
  * @SINCE 2019/11/1 12:54
  */
 @Data
-public class DataBaseParam {
+public class SourceDataBaseParam {
 
 	private String username;
 	private String password;
 	private List<String> column;
 
-	private List<DataConnection> connection;
+	private List<SourceDataConnection> connection;
 
 }

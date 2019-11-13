@@ -12,6 +12,8 @@ public enum DataBaseType {
 
 	POSTGRESQL("postgresqlreader", "postgresqlwriter", JdbcConstants.POSTGRESQL),
 
+	ORACLE("oraclereader", "oraclewriter", JdbcConstants.ORACLE),
+
 	EMPTY(StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY);//空字符防止空指针;
 
 	private String reader;

@@ -10,6 +10,6 @@ import lombok.Data;
 public class DataReader {
 
 	private String name;
-	private DataBaseParam parameter;
+	private SourceDataBaseParam parameter;
 
 }

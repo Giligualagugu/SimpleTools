@@ -9,9 +9,9 @@ import java.util.List;
  * @SINCE 2019/11/1 12:56
  */
 @Data
-public class DataConnection {
+public class SourceDataConnection {
 
-	private String jdbcUrl;
+	private List<String> jdbcUrl;
 	private List<String> table;
 
 }

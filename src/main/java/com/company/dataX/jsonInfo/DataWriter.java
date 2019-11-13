@@ -10,5 +10,5 @@ import lombok.Data;
 public class DataWriter {
 
 	private String name;
-	private DataBaseParam parameter;
+	private TargetDataBaseParam parameter;
 }

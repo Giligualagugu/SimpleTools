@@ -140,9 +140,13 @@ public class MultiJsonListener implements ActionListener {
 			sqlStatement.accept(visitor);
 
 			Map<TableStat.Name, TableStat> tables = visitor.getTables();
+
 			for (Map.Entry<TableStat.Name, TableStat> statEntry : tables.entrySet()) {
 				if (statEntry.getValue().toString().equalsIgnoreCase("Create")) {
 					nameList.add(statEntry.getKey().getName());
+				} else {
+					//当前这句sqlStatement 如果不是建表语句则跳出;
+					continue;
 				}
 			}
 
@@ -152,7 +156,6 @@ public class MultiJsonListener implements ActionListener {
 					columnList.add(column.getName());
 				}
 			}
-
 		}
 
 		if (nameList.size() > 1) {

@@ -76,21 +76,27 @@ public class MainView {
 		JRadioButton mysqlBtnS = new JRadioButton(DataBaseType.MYSQL.name());
 		mysqlBtnS.setSelected(true);
 		JRadioButton postgreBtnS = new JRadioButton(DataBaseType.POSTGRESQL.name());
+		JRadioButton oracleBtnS = new JRadioButton(DataBaseType.ORACLE.name());
 		sourceBtnGroup = new ButtonGroup();
 		sourceBtnGroup.add(mysqlBtnS);
 		sourceBtnGroup.add(postgreBtnS);
+		sourceBtnGroup.add(oracleBtnS);
 		sourceBox.add(mysqlBtnS);
 		sourceBox.add(postgreBtnS);
+		sourceBox.add(oracleBtnS);
 
 		// 目标库
 		JRadioButton mysqlBtnT = new JRadioButton(DataBaseType.MYSQL.name());
 		mysqlBtnT.setSelected(true);
 		JRadioButton postgreBtnT = new JRadioButton(DataBaseType.POSTGRESQL.name());
+		JRadioButton oracleBtnT = new JRadioButton(DataBaseType.ORACLE.name());
 		targetBtnGroup = new ButtonGroup();
 		targetBtnGroup.add(mysqlBtnT);
 		targetBtnGroup.add(postgreBtnT);
+		targetBtnGroup.add(oracleBtnT);
 		targetBox.add(mysqlBtnT);
 		targetBox.add(postgreBtnT);
+		targetBox.add(oracleBtnT);
 
 		motherboard.getContentPane().add(boxLeft, BorderLayout.WEST);
 	}

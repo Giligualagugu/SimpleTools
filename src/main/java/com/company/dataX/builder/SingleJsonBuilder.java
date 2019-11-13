@@ -36,14 +36,14 @@ public class SingleJsonBuilder {
 	//构建json对象;
 	public SingleJson buildJsonFile() {
 		// 源数据库
-		DataConnection sourceConnection = new DataConnection();
-		sourceConnection.setJdbcUrl(getSourceUrl());
+		SourceDataConnection sourceConnection = new SourceDataConnection();
+		sourceConnection.setJdbcUrl(Collections.singletonList(getSourceUrl()));
 		sourceConnection.setTable(Collections.singletonList(getSourceTable()));
-		DataBaseParam sourceParam = new DataBaseParam();
+		SourceDataBaseParam sourceParam = new SourceDataBaseParam();
 		sourceParam.setColumn(getColumn());
 		sourceParam.setPassword(getSourcePwd());
 		sourceParam.setUsername(getSourceUsername());
-		List<DataConnection> sConnectionList = new ArrayList<DataConnection>(1);
+		List<SourceDataConnection> sConnectionList = new ArrayList<SourceDataConnection>(1);
 		sConnectionList.add(sourceConnection);
 		sourceParam.setConnection(sConnectionList);
 
@@ -52,14 +52,14 @@ public class SingleJsonBuilder {
 		dataReader.setParameter(sourceParam);
 
 		//目标数据库
-		DataConnection targetConnection = new DataConnection();
+		TargetDataConnection targetConnection = new TargetDataConnection();
 		targetConnection.setTable(Collections.singletonList(getTargetTabel()));
 		targetConnection.setJdbcUrl(getTargetUrl());
-		DataBaseParam targetParam = new DataBaseParam();
+		TargetDataBaseParam targetParam = new TargetDataBaseParam();
 		targetParam.setColumn(getColumn());
 		targetParam.setPassword(getTargetPwd());
 		targetParam.setUsername(getTargetUseranme());
-		List<DataConnection> tConnectionList = new ArrayList<DataConnection>(1);
+		List<TargetDataConnection> tConnectionList = new ArrayList<>(1);
 		tConnectionList.add(targetConnection);
 		targetParam.setConnection(tConnectionList);
 
