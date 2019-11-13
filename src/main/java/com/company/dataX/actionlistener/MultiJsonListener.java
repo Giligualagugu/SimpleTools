@@ -71,12 +71,12 @@ public class MultiJsonListener implements ActionListener {
 
 		List<File> fileList = view.getFileList();
 
-		builder.setSourceUrl(view.getUrl().getText());
-		builder.setTargetUrl(view.getUrl2().getText());
-		builder.setSourcePwd(view.getPwd().getText());
-		builder.setTargetPwd(view.getPwd2().getText());
-		builder.setSourceUsername(view.getUname().getText());
-		builder.setTargetUseranme(view.getUname2().getText());
+		builder.setSourceUrl(view.getUrl().getText().trim());
+		builder.setTargetUrl(view.getUrl2().getText().trim());
+		builder.setSourcePwd(view.getPwd().getText().trim());
+		builder.setTargetPwd(view.getPwd2().getText().trim());
+		builder.setSourceUsername(view.getUname().getText().trim());
+		builder.setTargetUseranme(view.getUname2().getText().trim());
 
 		String absolutePath = FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath();
 

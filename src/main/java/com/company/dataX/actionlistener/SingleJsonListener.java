@@ -47,16 +47,16 @@ public class SingleJsonListener implements ActionListener {
 			}
 		}
 
-		builder.setSourceUrl(view.getUrl().getText());
-		builder.setTargetUrl(view.getUrl2().getText());
-		builder.setSourcePwd(view.getPwd().getText());
-		builder.setTargetPwd(view.getPwd2().getText());
-		builder.setSourceUsername(view.getUname().getText());
-		builder.setTargetUseranme(view.getUname2().getText());
-		builder.setSourceTable(view.getSourceTable().getText());
-		builder.setTargetTabel(view.getTargetTable().getText());
+		builder.setSourceUrl(view.getUrl().getText().trim());
+		builder.setTargetUrl(view.getUrl2().getText().trim());
+		builder.setSourcePwd(view.getPwd().getText().trim());
+		builder.setTargetPwd(view.getPwd2().getText().trim());
+		builder.setSourceUsername(view.getUname().getText().trim());
+		builder.setTargetUseranme(view.getUname2().getText().trim());
+		builder.setSourceTable(view.getSourceTable().getText().trim());
+		builder.setTargetTabel(view.getTargetTable().getText().trim());
 
-		String text = view.getColumns().getText();
+		String text = view.getColumns().getText().trim();
 		if (StringUtils.isBlank(text)) {
 			LogUtils.loginfo(view.getLogs(), "字段不能为空...");
 			return;
