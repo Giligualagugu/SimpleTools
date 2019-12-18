@@ -170,7 +170,7 @@ public class BuildWithJdbcListener implements ActionListener {
 
 		if (StringUtils.isAnyBlank(url, url2, name, name2, pwd, pwd2)) {
 			LogUtils.loginfo(view.getLogs(), "数据库路径,用户名,密码必填...");
-			return;
+			throw new RuntimeException("参数校验不通过");
 		}
 
 //		if (StringUtils.isBlank(builder.getReader())) {
@@ -180,7 +180,8 @@ public class BuildWithJdbcListener implements ActionListener {
 
 		if (StringUtils.isBlank(builder.getWriter())) {
 			LogUtils.loginfo(view.getLogs(), "请选择 目标数据库类型");
-			return;
+			throw new RuntimeException("参数校验不通过");
+
 		}
 
 		String source = view.getSourceTable().getText();
@@ -189,6 +190,7 @@ public class BuildWithJdbcListener implements ActionListener {
 
 		if (StringUtils.isNotBlank(target) && StringUtils.isBlank(source)) {
 			LogUtils.loginfo(view.getLogs(), "目标库的表填写后,来源库的表名必填...");
+			throw new RuntimeException("参数校验不通过");
 		}
 
 	}
