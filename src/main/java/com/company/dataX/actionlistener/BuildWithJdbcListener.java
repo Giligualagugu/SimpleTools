@@ -36,19 +36,7 @@ public class BuildWithJdbcListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		SingleJsonBuilder builder = new SingleJsonBuilder();
-
-		//获取源数据库类型;
-		DataBaseType sourceDType = null;
-		Enumeration<AbstractButton> sourceDTypes = view.getSourceBtnGroup().getElements();
-		while (sourceDTypes.hasMoreElements()) {
-			AbstractButton abstractButton = sourceDTypes.nextElement();
-			if (abstractButton.isSelected()) {
-				sourceDType = DataBaseType.getType(abstractButton.getText());
-				builder.setReader(sourceDType.getReader());
-				break;
-			}
-		}
-
+		//目标库类型;
 		Enumeration<AbstractButton> targetDTypes = view.getTargetBtnGroup().getElements();
 		while (targetDTypes.hasMoreElements()) {
 			AbstractButton abstractButton = targetDTypes.nextElement();
@@ -71,7 +59,7 @@ public class BuildWithJdbcListener implements ActionListener {
 
 		boolean existTargetTableName = StringUtils.isNotBlank(targetTableName);
 
-		Map<String, List<String>> tablesAndColumns = getTablesAndColumns(builder.getSourceUrl(), builder.getSourceUsername(),
+		Map<String, List<String>> tablesAndColumns = getTablesAndColumns(builder, builder.getSourceUrl(), builder.getSourceUsername(),
 				builder.getSourcePwd(), view.getSourceTable().getText().trim());
 
 		if (tablesAndColumns.isEmpty()) {
@@ -122,7 +110,7 @@ public class BuildWithJdbcListener implements ActionListener {
 	}
 
 	//获取源数据库的表名和对应的字段名
-	public Map<String, List<String>> getTablesAndColumns(String url, String username, String pwd, String sourceTableName) {
+	public Map<String, List<String>> getTablesAndColumns(SingleJsonBuilder builder, String url, String username, String pwd, String sourceTableName) {
 		Connection connection = null;
 
 		if (StringUtils.isBlank(sourceTableName)) {
@@ -133,6 +121,11 @@ public class BuildWithJdbcListener implements ActionListener {
 		try {
 			connection = DriverManager.getConnection(url, username, pwd);
 			DatabaseMetaData metaData = connection.getMetaData();
+			String databaseProductName = metaData.getDatabaseProductName();
+
+			DataBaseType type = DataBaseType.getType(databaseProductName);
+			builder.setReader(type.getReader());
+
 			String catalog = connection.getCatalog();
 			String schema = connection.getSchema();
 			ResultSet tables = metaData.getTables(catalog, schema, sourceTableName, null);
@@ -166,15 +159,7 @@ public class BuildWithJdbcListener implements ActionListener {
 
 	}
 
-	public Map<String, List<String>> getTablesAndColumns(String url, String username, String pwd) {
-		return getTablesAndColumns(url, username, pwd, "%");
-	}
-
 	private void checkParams(SingleJsonBuilder builder) {
-		if (view.getFileList().isEmpty()) {
-			LogUtils.loginfo(view.getLogs(), "ddl.sql文件未导入");
-			return;
-		}
 
 		String url = view.getUrl().getText();
 		String url2 = view.getUrl2().getText();
@@ -188,10 +173,10 @@ public class BuildWithJdbcListener implements ActionListener {
 			return;
 		}
 
-		if (StringUtils.isBlank(builder.getReader())) {
-			LogUtils.loginfo(view.getLogs(), "请选择 源数据库类型");
-			return;
-		}
+//		if (StringUtils.isBlank(builder.getReader())) {
+//			LogUtils.loginfo(view.getLogs(), "请选择 源数据库类型");
+//			return;
+//		}
 
 		if (StringUtils.isBlank(builder.getWriter())) {
 			LogUtils.loginfo(view.getLogs(), "请选择 目标数据库类型");

@@ -60,8 +60,8 @@ public class MainView {
 		showColums();
 		showBtnGroups();
 
-		String tips = "1.从源数据库读取表信息并填充,不校验目标库的url,username,password.\n" +
-				"2.表名不填则获取所有表名" +
+		String tips = "1.从源数据库读取表信息并填充,不校验目标库的url, username, password\n" +
+				"2.表名不填则获取所有表名\n" +
 				"3.目标库的表填写后,源库的表名也必填";
 		logs.setText(tips);
 	}
@@ -72,7 +72,7 @@ public class MainView {
 		Box targetBox = Box.createVerticalBox();
 		JPanel boxLeft = new JPanel();
 		boxLeft.setLayout(new GridLayout(2, 1));
-		boxLeft.add(sourceBox);
+		//boxLeft.add(sourceBox);
 		boxLeft.add(targetBox);
 		sourceBox.setBorder(BorderFactory.createTitledBorder("来源库类型"));
 		targetBox.setBorder(BorderFactory.createTitledBorder("目标库类型"));

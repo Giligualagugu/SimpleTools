@@ -23,7 +23,7 @@ public enum DataBaseType {
 	public static DataBaseType getType(String database) {
 
 		for (DataBaseType type : DataBaseType.values()) {
-			if (type.name().equalsIgnoreCase(database)) {
+			if (type.getDbType().equalsIgnoreCase(database)) {
 				return type;
 			}
 		}
