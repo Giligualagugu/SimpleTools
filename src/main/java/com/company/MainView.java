@@ -60,10 +60,9 @@ public class MainView {
 		showColums();
 		showBtnGroups();
 
-		String tips = "1.公共项参数必填.\n" +
-				"2.来源库和目标库类型默认MYSQL.\n" +
-				"3.单文件生成-> 表名必填-> 表字段必填(每行一个字段名,不要标点符号)->点击\"生成单个\"\n" +
-				"4.多文件生成-> 公共项必填->导入多个建表文件->点击\"批量生成\"\n";
+		String tips = "1.从源数据库读取表信息并填充,不校验目标库的url,username,password.\n" +
+				"2.表名不填则获取所有表名" +
+				"3.目标库的表填写后,源库的表名也必填";
 		logs.setText(tips);
 	}
 
@@ -130,7 +129,8 @@ public class MainView {
 		//Box inputArea = Box.createHorizontalBox();
 //		inputArea.add(left);
 //		inputArea.add(right);
-		motherboard.add(inputArea, BorderLayout.CENTER);
+		//motherboard.add(inputArea, BorderLayout.CENTER);
+		motherboard.add(right, BorderLayout.CENTER);
 	}
 
 	private void showButtons() {
@@ -143,10 +143,13 @@ public class MainView {
 
 		JButton testBtn = new JButton("test");
 
-		jPanel.add(singleJson);
-		jPanel.add(importddl);
-		jPanel.add(multiJson);
+		JButton makefile = new JButton("生成脚本");
+
+		//jPanel.add(singleJson);
+		//jPanel.add(importddl);
+		//jPanel.add(multiJson);
 		jPanel.add(clearBtn);
+		jPanel.add(makefile);
 		//jPanel.add(testBtn);
 
 		motherboard.getContentPane().add(jPanel, BorderLayout.SOUTH);
@@ -155,8 +158,8 @@ public class MainView {
 		clearBtn.addActionListener(new ClearBtnListener(this));
 		importddl.addActionListener(new DDlFileImportListener(this));
 		multiJson.addActionListener(new MultiJsonListener(this));
-
 		testBtn.addActionListener(new TestActionListener(this));
+		makefile.addActionListener(new BuildWithJdbcListener(this));
 	}
 
 	private void showDataBaseInput() {
@@ -193,10 +196,10 @@ public class MainView {
 		targetBox.add(uname2);
 		targetBox.add(pwdLable2);
 		targetBox.add(pwd2);
-		boxLeft.setBorder(BorderFactory.createTitledBorder("公共项"));
+		boxLeft.setBorder(BorderFactory.createTitledBorder("公共必填项"));
 
 		Box boxRight = Box.createVerticalBox();
-		boxRight.setBorder(BorderFactory.createTitledBorder("单文件必填"));
+		boxRight.setBorder(BorderFactory.createTitledBorder("可选项"));
 
 		Box yuanbox = Box.createHorizontalBox();
 		Box nowbox = Box.createHorizontalBox();
