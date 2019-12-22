@@ -136,30 +136,20 @@ public class MainView {
 	private void showButtons() {
 
 		JPanel jPanel = new JPanel(new FlowLayout());
-		JButton singleJson = new JButton("生成单个");
-		JButton importddl = new JButton("导入ddl.sql文件");
-		JButton multiJson = new JButton("批量生成");
 		JButton clearBtn = new JButton("清理数据");
-
-		JButton testBtn = new JButton("test");
-
 		JButton makefile = new JButton("生成脚本");
+		JButton makeEntity = new JButton("列转换成java属性");
 
-		//jPanel.add(singleJson);
-		//jPanel.add(importddl);
-		//jPanel.add(multiJson);
 		jPanel.add(clearBtn);
 		jPanel.add(makefile);
-		//jPanel.add(testBtn);
+		jPanel.add(makeEntity);
 
 		motherboard.getContentPane().add(jPanel, BorderLayout.SOUTH);
 
-		singleJson.addActionListener(new SingleJsonListener(this));
 		clearBtn.addActionListener(new ClearBtnListener(this));
-		importddl.addActionListener(new DDlFileImportListener(this));
-		multiJson.addActionListener(new MultiJsonListener(this));
-		testBtn.addActionListener(new TestActionListener(this));
 		makefile.addActionListener(new BuildWithJdbcListener(this));
+
+		makeEntity.addActionListener(new BuildFeildListener(this));
 	}
 
 	private void showDataBaseInput() {
