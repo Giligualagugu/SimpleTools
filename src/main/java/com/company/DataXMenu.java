@@ -1,6 +1,7 @@
 package com.company;
 
 import javax.swing.*;
+import java.io.IOException;
 
 /**
  * @AUTHOR xukele
@@ -12,7 +13,11 @@ public class DataXMenu {
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				new MainView();
+				try {
+					new MainView();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}

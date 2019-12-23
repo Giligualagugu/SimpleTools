@@ -1,14 +1,22 @@
 package com.company;
 
-import com.company.dataX.actionlistener.*;
+import com.company.dataX.actionlistener.BuildFeildListener;
+import com.company.dataX.actionlistener.BuildWithJdbcListener;
+import com.company.dataX.actionlistener.ClearBtnListener;
+import com.company.dataX.actionlistener.CustomWindowListener;
 import com.company.dataX.enums.DataBaseType;
 import lombok.Data;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * xukele
@@ -16,6 +24,8 @@ import java.util.List;
  */
 @Data
 public class MainView {
+
+	private Map<String, String> cache = new HashMap<>();
 
 	private ButtonGroup sourceBtnGroup;
 	private ButtonGroup targetBtnGroup;
@@ -40,13 +50,41 @@ public class MainView {
 
 	private JFileChooser jFileChooser;
 
-	MainView() {
+	MainView() throws IOException {
 		initialize();
+
+		loadLocalCache();
+	}
+
+	private void loadLocalCache() {
+		File file = new File("/usr/local/share/xukele.txt");
+		if (file.exists()) {
+			file.setReadable(true);
+			try {
+				ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file));
+				HashMap<String, String> map = (HashMap<String, String>) objectInputStream.readObject();
+				url.setText(map.get("url"));
+				pwd.setText(map.get("pwd"));
+				uname.setText(map.get("username"));
+				sourceTable.setText(map.get("sourceTable"));
+				//=========================
+				url2.setText(map.get("url2"));
+				pwd2.setText(map.get("pwd2"));
+				uname2.setText(map.get("username2"));
+				targetTable.setText(map.get("targetTable"));
+				if (objectInputStream != null) objectInputStream.close();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+
+		}
+
 	}
 
 	private void initialize() {
 		motherboard = new JFrame("DataX json creater");
 		motherboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		motherboard.addWindowListener(new CustomWindowListener(this));
 		motherboard.setLocationByPlatform(true);
 		motherboard.pack();
 		motherboard.setSize(800, 600);
