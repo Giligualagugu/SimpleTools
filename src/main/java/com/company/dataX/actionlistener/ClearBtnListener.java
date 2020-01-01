@@ -17,7 +17,6 @@ public class ClearBtnListener implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 
-		mainView.getColumns().setText(null);
 		mainView.getUname().setText(null);
 		mainView.getUname2().setText(null);
 		mainView.getUrl().setText(null);

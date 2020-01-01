@@ -1,9 +1,6 @@
 package com.company;
 
-import com.company.dataX.actionlistener.BuildFeildListener;
-import com.company.dataX.actionlistener.BuildWithJdbcListener;
-import com.company.dataX.actionlistener.ClearBtnListener;
-import com.company.dataX.actionlistener.CustomWindowListener;
+import com.company.dataX.actionlistener.*;
 import com.company.dataX.enums.DataBaseType;
 import lombok.Data;
 
@@ -27,7 +24,6 @@ public class MainView {
 
 	private Map<String, String> cache = new HashMap<>();
 
-	private ButtonGroup sourceBtnGroup;
 	private ButtonGroup targetBtnGroup;
 
 	private JTextArea logs;
@@ -43,8 +39,6 @@ public class MainView {
 
 	private JTextField sourceTable;
 	private JTextField targetTable;
-
-	private JTextArea columns;
 
 	private List<File> fileList = new LinkedList<File>();
 
@@ -106,27 +100,11 @@ public class MainView {
 
 	private void showBtnGroups() {
 
-		Box sourceBox = Box.createVerticalBox();
 		Box targetBox = Box.createVerticalBox();
 		JPanel boxLeft = new JPanel();
 		boxLeft.setLayout(new GridLayout(2, 1));
-		//boxLeft.add(sourceBox);
 		boxLeft.add(targetBox);
-		sourceBox.setBorder(BorderFactory.createTitledBorder("来源库类型"));
 		targetBox.setBorder(BorderFactory.createTitledBorder("目标库类型"));
-
-		// 来源库
-		JRadioButton mysqlBtnS = new JRadioButton(DataBaseType.MYSQL.name());
-		mysqlBtnS.setSelected(true);
-		JRadioButton postgreBtnS = new JRadioButton(DataBaseType.POSTGRESQL.name());
-		JRadioButton oracleBtnS = new JRadioButton(DataBaseType.ORACLE.name());
-		sourceBtnGroup = new ButtonGroup();
-		sourceBtnGroup.add(mysqlBtnS);
-		sourceBtnGroup.add(postgreBtnS);
-		sourceBtnGroup.add(oracleBtnS);
-		sourceBox.add(mysqlBtnS);
-		sourceBox.add(postgreBtnS);
-		sourceBox.add(oracleBtnS);
 
 		// 目标库
 		JRadioButton mysqlBtnT = new JRadioButton(DataBaseType.MYSQL.name());
@@ -153,41 +131,29 @@ public class MainView {
 		right.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		right.setBorder(BorderFactory.createTitledBorder("操作日志"));
 
-		columns = new JTextArea();
-		columns.setColumns(20);
-		JScrollPane left = new JScrollPane(columns);
-
-		columns.setLineWrap(true);
-		left.setWheelScrollingEnabled(true);
-		left.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-
-		left.setBorder(BorderFactory.createTitledBorder("表字段(单文件必填)"));
-
-		JSplitPane inputArea = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
-		//Box inputArea = Box.createHorizontalBox();
-//		inputArea.add(left);
-//		inputArea.add(right);
-		//motherboard.add(inputArea, BorderLayout.CENTER);
 		motherboard.add(right, BorderLayout.CENTER);
 	}
 
 	private void showButtons() {
 
 		JPanel jPanel = new JPanel(new FlowLayout());
-		JButton clearBtn = new JButton("清理数据");
-		JButton makefile = new JButton("生成脚本");
-		JButton makeEntity = new JButton("列转换成java属性");
+		JButton clearBtn = new JButton("CLEAR");
+		JButton makefile = new JButton("生成dataXjson配置文件");
+		JButton makeEntity = new JButton("列转换成javaBean");
+		JButton exchangeEnv=new JButton("dataXjson替换环境配置");
 
 		jPanel.add(clearBtn);
 		jPanel.add(makefile);
 		jPanel.add(makeEntity);
+		jPanel.add(exchangeEnv);
 
 		motherboard.getContentPane().add(jPanel, BorderLayout.SOUTH);
 
 		clearBtn.addActionListener(new ClearBtnListener(this));
 		makefile.addActionListener(new BuildWithJdbcListener(this));
-
 		makeEntity.addActionListener(new BuildFeildListener(this));
+		exchangeEnv.addActionListener(new ExchangeEnvListener(this));
+
 	}
 
 	private void showDataBaseInput() {
